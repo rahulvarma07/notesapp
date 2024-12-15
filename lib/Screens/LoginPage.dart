@@ -9,7 +9,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../Widgets/Button.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+  final VoidCallback showLoginPage;
+  LoginPage({
+    super.key,
+    required this.showLoginPage
+  });
 
   final userEmailController = TextEditingController();
 
@@ -41,7 +45,18 @@ class LoginPage extends StatelessWidget {
                   TextForms(controller: userPasswordController, hintText: "Password", obscuretext: true),
                 ],
               ),
-              SizedBox(height: 40,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                        child: Text("Forgot password?", style: GoogleFonts.nunito(color: Colors.blue, fontSize: 15, fontWeight: FontWeight.bold),),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 30,),
               GestureDetector(
                 onTap : (){
                   loginTheUser();
@@ -53,7 +68,9 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Don't have an account?", style: GoogleFonts.nunito(color: Colors.grey.shade600),),
-                  Text(" SignUp", style: GoogleFonts.nunito(color: Colors.blue),)
+                  GestureDetector(
+                      onTap: showLoginPage,
+                      child: Text(" SignUp", style: GoogleFonts.nunito(color: Colors.blue, fontWeight: FontWeight.bold),))
                 ],
               ),
               SizedBox(height: 10,),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -7,7 +8,11 @@ import '../Widgets/Button.dart';
 import '../Widgets/TextForms.dart';
 
 class SignUpPage extends StatelessWidget {
-  SignUpPage({super.key});
+  final VoidCallback showSignUpPage;
+  SignUpPage({
+    super.key,
+    required this.showSignUpPage
+  });
 
   final userEmailController = TextEditingController();
   final userPasswordController = TextEditingController();
@@ -38,15 +43,26 @@ class SignUpPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 40,),
-              LoginOrSignUpButton(text: "SignUp",),
+              GestureDetector(
+                onTap: (){
+                  if(userEmailController.text.trim().isNotEmpty && userPasswordController.text.trim().length >= 8 && userPasswordController.text.trim() == conformUserPasswordController.text.trim()){
+                    signUpTheUser();
+                  }
+                },
+                  child: LoginOrSignUpButton(text: "SignUp",),
+              ),
               SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Already have an account?", style: GoogleFonts.nunito(color: Colors.grey.shade600),),
-                  Text(" Login", style: GoogleFonts.nunito(color: Colors.blue),)
+                  GestureDetector(
+                      onTap: showSignUpPage,
+                      child: Text(" Login", style: GoogleFonts.nunito(color: Colors.blue, fontWeight: FontWeight.bold),)
+                  )
                 ],
               ),
+
               SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -63,5 +79,8 @@ class SignUpPage extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future signUpTheUser() async{
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: userEmailController.text.trim(), password: userPasswordController.text.trim());
   }
 }

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:notesapp/Screens/LoginPage.dart';
+import 'package:notesapp/Screens/toogleLoginSIgnUp.dart';
 
 import 'homepage.dart';
 
@@ -13,10 +13,10 @@ class HomePageOrAuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshotData){
           if(snapshotData.hasData){
-            return HomePage();
+            return const HomePage();
           }
           else{
-            return LoginPage();
+            return const togglePageLoginAndSignup();
           }
         }
     );
